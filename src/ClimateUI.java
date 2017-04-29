@@ -75,14 +75,22 @@ public class ClimateUI extends JFrame {
 		
 		String cityName = (String)comboBox.getSelectedItem();
 		Object columnNames[] = {cityName, "Temperature", "Variance"};
-		Object data[][] = {{"", "", ""}};
+		Object data[][] = {{"", "", ""},{"", "", ""},{"", "", ""},{"", "", ""},{"", "", ""}};
 		table = new JTable(data, columnNames);
 		table.setBounds(192, 395, 329, -152);
 		contentPane.add(table);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(157, 197, 381, 185);
+		scrollPane.setBounds(157, 197, 381, 111);
 		contentPane.add(scrollPane);
+		
+		JLabel lblTheAverageIn = new JLabel("The Average Temperature in 5 Days:");
+		lblTheAverageIn.setBounds(157, 321, 381, 16);
+		contentPane.add(lblTheAverageIn);
+		
+		JLabel lblTheAverageVariance = new JLabel("The Average Variance in 5 days:");
+		lblTheAverageVariance.setBounds(157, 350, 381, 16);
+		contentPane.add(lblTheAverageVariance);
 		
 		JButton btnSelect = new JButton("Select");
 		btnSelect.addActionListener(new ActionListener() {
@@ -90,29 +98,44 @@ public class ClimateUI extends JFrame {
 				String cityNameUpdate = (String)comboBox.getSelectedItem();
 				table.getColumnModel().getColumn(0).setHeaderValue(cityNameUpdate);
 				table.getTableHeader().repaint();
+				String url = "";
+				switch(cityNameUpdate){
+				case "Jakarta":
+					url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Jakarta&mode=json&units=metric&cnt=5&APPID=481e3bc28e5264e5607c2b65b449bfc1";
+					break;
+				case "Tokyo":
+					url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Tokyo&mode=json&units=metric&cnt=5&APPID=481e3bc28e5264e5607c2b65b449bfc1";
+					break;
+				case "London":
+					url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London&mode=json&units=metric&cnt=5&APPID=481e3bc28e5264e5607c2b65b449bfc1";
+					break;
+				}
 				
-				String url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Jakarta&mode=json&units=metric&cnt=5&APPID=481e3bc28e5264e5607c2b65b449bfc1";
 				ObjectMapper mapper = new ObjectMapper();
 				//mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 				try{
 					Data data = mapper.readValue(new URL(url), Data.class);
 					List<Forecast> listData = data.getlist();
 					double averageTemp = 0, averageVar = 0;
+					int index = 0;
 					for(Forecast f : listData){
 						Date date = new Date(f.getdt()*1000);
 				        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-				        format.setTimeZone(TimeZone.getTimeZone("PST"));
+				        format.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
 				        String formatted = format.format(date);
-						System.out.println("Date: " + formatted);
-						System.out.println("Temp: " + f.gettemp().getday());
-						System.out.println("Variance: " + (f.gettemp().getmax()- f.gettemp().getmin()) + "\n");
+						table.getModel().setValueAt(formatted, index, 0); 
+						//System.out.println("Temp: " + f.gettemp().getday());
+						table.getModel().setValueAt(f.gettemp().getday(), index, 1);
+						//System.out.println("Variance: " + (f.gettemp().getmax()- f.gettemp().getmin()) + "\n");
+						table.getModel().setValueAt(Math.floor((f.gettemp().getmax()- f.gettemp().getmin())*100)/100, index, 2);
 						averageTemp += f.gettemp().getday();
 						averageVar += (f.gettemp().getmax()- f.gettemp().getmin());
+						index++;
 					}
 					averageTemp /= 5;
-					System.out.println("Average Temperature for 5 days: " + Math.floor(averageTemp * 100)/100);
+					lblTheAverageIn.setText("The Average Temperature in 5 days : " + averageTemp);
 					averageVar /= 5;
-					System.out.println("Average Variance for 5 days: " + Math.floor(averageVar * 100)/100);
+					lblTheAverageVariance.setText("The Average Variance in 5 days : " + Math.floor(averageVar*100)/100);
 				}
 				catch(JsonParseException ex){
 					System.out.print(ex.getMessage()+ "\nJson Parse error");
@@ -127,6 +150,12 @@ public class ClimateUI extends JFrame {
 		});
 		btnSelect.setBounds(433, 91, 88, 25);
 		contentPane.add(btnSelect);
+		
+		JLabel lblByWilliamMinar = new JLabel("By: William Minar Widjaja");
+		lblByWilliamMinar.setBounds(499, 436, 196, 16);
+		contentPane.add(lblByWilliamMinar);
+		
+		
 		
 		
 	}
