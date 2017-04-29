@@ -21,19 +21,60 @@ public class Forecast{
 			clouds = 0;
 			rain = 0;
 		}
-		public class Temperature{
-			private double day;
-			private double min;
-			private double max;
-			private double night;
-			private double eve;
-			private double morn;
+		public void setdt(int dt){
+			this.dt = dt;
 		}
-		public class Weather{
-			private int id;
-			private String main;
-			private String description;
-			private String icon;
-			
+		public int getdt(){
+			return dt;
 		}
+		public void settemp(Temperature temp){
+			this.temp = temp;
+		}
+		public Temperature gettemp(){
+			return temp;
+		}
+		public void setpressure(double pressure){
+			this.pressure = pressure;
+		}
+		public double getpressure(){
+			return pressure;
+		}
+		public void sethumidity(int humidity){
+			this.humidity = humidity;
+		}
+		public int gethumidity(){
+			return humidity;
+		}
+		public void setweather(List<Weather> weather){
+			this.weather = weather;
+		}
+		public List<Weather> getweather(){
+			return weather;
+		}
+		public void setspeed(double speed){
+			this.speed = speed;
+		}
+		public double getspeed(){
+			return speed;
+		}
+		public void setdeg(int deg){
+			this.deg = deg;
+		}
+		public int getdeg(){
+			return deg;
+		}
+		public void setclouds(int clouds){
+			this.clouds = clouds;
+		}
+		public int getclouds(){
+			return clouds;
+		}
+		public void setrain(double rain){
+			this.rain = rain;
+		}
+		public double getrain(){
+			return rain;
+		}
+		
+
 	}
