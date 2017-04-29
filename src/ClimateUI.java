@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
+import javax.swing.JScrollPane;
 
 public class ClimateUI extends JFrame {
 
@@ -60,18 +61,27 @@ public class ClimateUI extends JFrame {
 		comboBox.setBounds(189, 92, 232, 22);
 		contentPane.add(comboBox);
 		
+		String cityName = (String)comboBox.getSelectedItem();
+		Object columnNames[] = {cityName, "Temperature", "Variance"};
+		Object data[][] = {{"", "", ""}};
+		table = new JTable(data, columnNames);
+		table.setBounds(192, 395, 329, -152);
+		contentPane.add(table);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(157, 197, 381, 185);
+		contentPane.add(scrollPane);
+		
 		JButton btnSelect = new JButton("Select");
 		btnSelect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				String cityNameUpdate = (String)comboBox.getSelectedItem();
+				table.getColumnModel().getColumn(0).setHeaderValue(cityNameUpdate);
+				table.getTableHeader().repaint();
 			}
 		});
 		btnSelect.setBounds(433, 91, 88, 25);
 		contentPane.add(btnSelect);
-		
-		table = new JTable();
-		table.setBounds(192, 395, 329, -152);
-		contentPane.add(table);
 		
 		
 	}
