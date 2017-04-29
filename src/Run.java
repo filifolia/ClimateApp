@@ -1,11 +1,11 @@
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.DeserializationConfig;
 import java.io.*;
 import java.util.*;
 import java.net.URL;
+import java.text.*;
 
 public class Run {
 
@@ -16,15 +16,22 @@ public class Run {
 		try{
 			Data data = mapper.readValue(new URL(url), Data.class);
 			List<Forecast> listData = data.getlist();
-			double averageTemp = 0;
+			double averageTemp = 0, averageVar = 0;
 			for(Forecast f : listData){
-				System.out.println("Date: " + f.getdt());
+				Date date = new Date(f.getdt()*1000);
+		        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		        format.setTimeZone(TimeZone.getTimeZone("PST"));
+		        String formatted = format.format(date);
+				System.out.println("Date: " + formatted);
 				System.out.println("Temp: " + f.gettemp().getday());
 				System.out.println("Variance: " + (f.gettemp().getmax()- f.gettemp().getmin()) + "\n");
 				averageTemp += f.gettemp().getday();
+				averageVar += (f.gettemp().getmax()- f.gettemp().getmin());
 			}
 			averageTemp /= 5;
 			System.out.println("Average Temperature for 5 days: " + Math.floor(averageTemp * 100)/100);
+			averageVar /= 5;
+			System.out.println("Average Variance for 5 days: " + Math.floor(averageVar * 100)/100);
 		}
 		catch(JsonParseException e){
 			System.out.print(e.getMessage()+ "\nJson Parse error");

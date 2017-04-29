@@ -1,6 +1,6 @@
 import java.util.*;
 public class Forecast{
-		private int dt;
+		private long dt;
 		private Temperature temp;
 		private double pressure;
 		private int humidity;
@@ -24,7 +24,7 @@ public class Forecast{
 		public void setdt(int dt){
 			this.dt = dt;
 		}
-		public int getdt(){
+		public long getdt(){
 			return dt;
 		}
 		public void settemp(Temperature temp){
