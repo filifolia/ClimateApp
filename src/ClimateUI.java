@@ -84,7 +84,7 @@ public class ClimateUI extends JFrame {
 		scrollPane.setBounds(157, 197, 381, 111);
 		contentPane.add(scrollPane);
 		
-		JLabel lblTheAverageIn = new JLabel("The Average Temperature in 5 Days:");
+		JLabel lblTheAverageIn = new JLabel("The Average Temperature in 5 Days: (Please Select First)");
 		lblTheAverageIn.setBounds(157, 321, 381, 16);
 		contentPane.add(lblTheAverageIn);
 		
@@ -133,7 +133,7 @@ public class ClimateUI extends JFrame {
 						index++;
 					}
 					averageTemp /= 5;
-					lblTheAverageIn.setText("The Average Temperature in 5 days : " + averageTemp);
+					lblTheAverageIn.setText("The Average Temperature in 5 days : " + Math.floor(averageTemp*100)/100);
 					averageVar /= 5;
 					lblTheAverageVariance.setText("The Average Variance in 5 days : " + Math.floor(averageVar*100)/100);
 				}
@@ -154,9 +154,6 @@ public class ClimateUI extends JFrame {
 		JLabel lblByWilliamMinar = new JLabel("By: William Minar Widjaja");
 		lblByWilliamMinar.setBounds(499, 436, 196, 16);
 		contentPane.add(lblByWilliamMinar);
-		
-		
-		
-		
+	
 	}
 }
