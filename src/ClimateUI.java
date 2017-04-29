@@ -78,6 +78,8 @@ public class ClimateUI extends JFrame {
 				String cityNameUpdate = (String)comboBox.getSelectedItem();
 				table.getColumnModel().getColumn(0).setHeaderValue(cityNameUpdate);
 				table.getTableHeader().repaint();
+				
+				
 			}
 		});
 		btnSelect.setBounds(433, 91, 88, 25);
